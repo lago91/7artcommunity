@@ -1,0 +1,35 @@
+Implementacion de Paises Estados apartir de los archivos
+*Tabla_Ciudad.sql
+*Tabla_Pais.sql
+ 
+ Teniendo Como base las siguientes tablas y habiendo ejecutado los sql antes mencionados:
+ 
+ CREATE TABLE Pais(
+ idPais int(11),
+ pais varchar(45),
+ codigoPais varchar (3) 
+ )
+ 
+ CREATE TABLE Estado(
+ idEstado int(11),
+ estado varchar(45),
+ codigoPais(3),
+ )
+ 
+ ALTER TABLE Estado ADD FOREIGN KEY (codigoPais) REFERENCES Pais(codigoPais);
+ 
+ *Procedemos a ejecutar las siguients consultar asegurandonos que el campo "Estado.estado" no este definido como UNIQUE
+ 
+ INSERT INTO Pais (pais,codigoPais) SELECT PaisNombre,PaisCodigo from PaisTemp;
+ INSERT INTO Estado (estado,codigoPais) SELECT CiudadDistrito,PaisCodigo from Ciudad;
+ 
+ *Finalmente eliminamos los estados duplicados de la siguiente manera:
+ 
+ CREATE TABLE tab_temp AS SELECT * FROM Estado GROUP BY estado;
+ DELETE FROM Estado;
+ INSERT INTO Estado SELECT * FROM tab_temp;
+ DROP tab_temp;
+ DROP Ciudad;
+ DROP PaisTemp;
+ 
+ 
